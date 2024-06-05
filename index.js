@@ -8,6 +8,7 @@ const academicCalendarRoutes = require('./routes/academicCalendarRoutes');
 const examScheduleRoutes = require('./routes/examScheduleRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const circularRoutes = require('./routes/circularRoutes');
+const authRoutes = require('./routes/authRoutes'); 
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use('/academic-calendars', academicCalendarRoutes);
 app.use('/exam-schedules', examScheduleRoutes);
 app.use('/contacts', contactRoutes);
 app.use('/circulars', circularRoutes);
+app.use('/auth', authRoutes);  // Add this line
 
 // Start the server
 const PORT = process.env.PORT || 9001;
