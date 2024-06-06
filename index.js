@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors'); // Add this line
+const bodyParser = require('body-parser');
 
 const placementRecordRoutes = require('./routes/placementRecordRoutes');
 const homeUpdateRoutes = require('./routes/homeUpdateRoutes');
@@ -11,6 +12,9 @@ const circularRoutes = require('./routes/circularRoutes');
 const authRoutes = require('./routes/authRoutes');
 
 const app = express();
+
+app.use(bodyParser.json({ limit: '10mb' }));  // Adjust the size as needed
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));  // A
 
 // Middleware
 const corsOptions = {
