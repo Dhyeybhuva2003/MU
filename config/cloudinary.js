@@ -13,8 +13,8 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'MONARCK_UNIVERSITY', // Folder where uploaded files will be stored
-    allowed_formats: ['pdf'], // Allowed file formats
+    // Removed 'folder' configuration to upload to the root directory
+    allowed_formats: [], // Allow all file formats
     resource_type: 'auto', // Automatically detect resource type
   },
 });
