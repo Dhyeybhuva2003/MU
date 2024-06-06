@@ -13,12 +13,19 @@ const authRoutes = require('./routes/authRoutes');
 const app = express();
 
 // Middleware
-app.use(cors({
-    origin: 'http://localhost:3000',
-    methods: 'GET,POST,PUT,DELETE',
-    allowedHeaders: 'Content-Type,Authorization'
-}));
+const corsOptions = {
+    origin: (origin, callback) => {
+        if (!origin || /http:\/\/localhost:\d+$/.test(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: 'GET,POST,PUT,DELETE', // Allow specific methods
+    allowedHeaders: 'Content-Type,Authorization', // Allow specific headers
+};
 
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Connect to MongoDB using db.js
