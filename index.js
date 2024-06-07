@@ -11,6 +11,7 @@ const circularRoutes = require('./routes/circularRoutes');
 const authRoutes = require('./routes/authRoutes');
 
 const app = express();
+app.use(express.json());
 
 // CORS Middleware allowing requests from all origins
 app.use(cors());
