@@ -16,7 +16,7 @@ const app = express();
 const corsOptions = {
     origin: (origin, callback) => {
         // Allow requests only from localhost for now
-        if (!origin || origin.startsWith('http://localhost:3000')) {
+        if (!origin || origin.startsWith('http://localhost:3001')) {
             callback(null, true);
         } else {
             callback(new Error('Not allowed by CORS'));
