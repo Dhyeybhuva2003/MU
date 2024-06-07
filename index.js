@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors'); // Add this line
-const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const placementRecordRoutes = require('./routes/placementRecordRoutes');
 const homeUpdateRoutes = require('./routes/homeUpdateRoutes');
@@ -13,10 +12,6 @@ const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
-// Increase the payload size limit
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
-
 // Middleware
 const corsOptions = {
     origin: (origin, callback) => {
@@ -26,12 +21,15 @@ const corsOptions = {
             callback(new Error('Not allowed by CORS'));
         }
     },
-    methods: 'GET,POST,PUT,DELETE', // Allow specific methods
-    allowedHeaders: 'Content-Type,Authorization', // Allow specific headers
+    methods: 'GET,POST,PUT,DELETE',
+    allowedHeaders: 'Content-Type,Authorization',
 };
 
 app.use(cors(corsOptions));
-app.use(express.json());
+
+// Increase the payload size limit
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Connect to MongoDB using db.js
 require('./config/db')();
