@@ -12,25 +12,8 @@ const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
-// Middleware
-const corsOptions = {
-    origin: (origin, callback) => {
-        // Allow requests only from localhost for now
-        if (!origin || origin.startsWith('http://localhost:3001')) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    methods: 'GET,POST,PUT,DELETE',
-    allowedHeaders: 'Content-Type,Authorization',
-};
-
-app.use(cors(corsOptions));
-
-// Increase the payload size limit
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
+// CORS Middleware allowing requests from all origins
+app.use(cors());
 
 // Connect to MongoDB using db.js
 require('./config/db')();
