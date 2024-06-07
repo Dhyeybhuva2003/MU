@@ -28,8 +28,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // Increase the payload size limit
-// app.use(express.json({ limit: '50mb' }));
-// app.use(express.urlencoded({ limit: '50mb', extended: true }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Connect to MongoDB using db.js
 require('./config/db')();
