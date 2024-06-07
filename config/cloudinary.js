@@ -12,13 +12,21 @@ cloudinary.config({
 // Configure Cloudinary storage for Multer
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  params: {
-    // Removed 'folder' configuration to upload to the root directory
-    allowed_formats: [], // Allow all file formats
-    resource_type: 'auto', // Automatically detect resource type
+  params: async (req, file) => {
+    let folder = 'other'; // default folder
+    if (file.mimetype === 'application/pdf') {
+      folder = 'pdf';
+    } else if (['image/jpeg', 'image/png'].includes(file.mimetype)) {
+      folder = 'image';
+    }
+
+    return {
+      folder: folder,
+      allowed_formats: ['jpg', 'png', 'pdf'],
+      resource_type: 'auto',
+    };
   },
 });
-
 // Configure Multer with Cloudinary storage
 const upload = multer({ storage: storage });
 
