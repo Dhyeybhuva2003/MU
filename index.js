@@ -15,7 +15,8 @@ const app = express();
 // Middleware
 const corsOptions = {
     origin: (origin, callback) => {
-        if (!origin || /http:\/\/localhost:\d+$/.test(origin)) {
+        // Allow requests only from localhost for now
+        if (!origin || origin.startsWith('http://localhost:3000')) {
             callback(null, true);
         } else {
             callback(new Error('Not allowed by CORS'));
@@ -42,6 +43,12 @@ app.use('/exam-schedules', examScheduleRoutes);
 app.use('/contacts', contactRoutes);
 app.use('/circulars', circularRoutes);
 app.use('/auth', authRoutes);
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something went wrong!');
+});
 
 // Start the server
 const PORT = process.env.PORT || 9001;
