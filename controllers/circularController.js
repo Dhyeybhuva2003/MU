@@ -1,14 +1,15 @@
-// project-root/controllers/circularController.js
-
 const Circular = require('../models/Circular');
 const { upload } = require('../config/cloudinary');
+const cloudinary = require('cloudinary').v2;
 
 // Controller functions to handle CRUD operations for circulars
 
 // Create a new circular
 exports.createCircular = async (req, res) => {
     try {
-        const result = await upload(req.file.path); // Upload document to Cloudinary
+        const result = await cloudinary.uploader.upload(req.file.path, {
+            folder: 'circulars'
+        }); // Upload document to Cloudinary
         const circular = new Circular({
             name: req.body.name,
             documentUrl: result.secure_url,
@@ -49,7 +50,9 @@ exports.updateCircular = async (req, res) => {
     try {
         let updateData = { name: req.body.name, uploadDate: req.body.uploadDate };
         if (req.file) {
-            const result = await upload(req.file.path); // Upload new document to Cloudinary
+            const result = await cloudinary.uploader.upload(req.file.path, {
+                folder: 'circulars'
+            }); // Upload new document to Cloudinary
             updateData.documentUrl = result.secure_url;
         }
         const circular = await Circular.findByIdAndUpdate(req.params.id, updateData, { new: true });
@@ -69,6 +72,9 @@ exports.deleteCircular = async (req, res) => {
         if (!circular) {
             return res.status(404).json({ message: 'Circular not found' });
         }
+        // Assuming documentUrl contains the Cloudinary public ID
+        const publicId = circular.documentUrl.split('/').pop().split('.')[0];
+        await cloudinary.uploader.destroy(publicId); // Delete the file from Cloudinary
         res.status(200).json({ message: 'Circular deleted successfully' });
     } catch (err) {
         res.status(500).json({ message: err.message });

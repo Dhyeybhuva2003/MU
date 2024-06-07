@@ -13,9 +13,6 @@ const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
-app.use(bodyParser.json({ limit: '10mb' }));  // Adjust the size as needed
-app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));  // A
-
 // Middleware
 const corsOptions = {
     origin: (origin, callback) => {

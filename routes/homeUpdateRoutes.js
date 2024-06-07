@@ -1,5 +1,3 @@
-// project-root/routes/homeUpdateRoutes.js
-
 const express = require('express');
 const router = express.Router();
 const homeUpdateController = require('../controllers/homeUpdateController');
