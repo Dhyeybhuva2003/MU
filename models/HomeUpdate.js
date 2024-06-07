@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 
 const homeUpdateSchema = new mongoose.Schema({
-    // image: String, // Assuming you store the image URL from Cloudinary
+    image: String, // Assuming you store the image URL from Cloudinary
     title: String,
     description: String,
     position: String,
