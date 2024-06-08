@@ -64,7 +64,7 @@ exports.updateAcademicCalendar = async (req, res) => {
         try {
             let updateData = {};
             
-            if(req.files.pdfUrl){
+            if(req.files?.pdfUrl){
                  const uploadedPdf = await uploadImage(req.files.pdfUrl,process.env.FOLDER_PDF);
                  updateData.pdfUrl = uploadedPdf.secure_url
             }
