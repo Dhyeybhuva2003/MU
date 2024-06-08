@@ -3,10 +3,9 @@
 const express = require('express');
 const router = express.Router();
 const academicCalendarController = require('../controllers/academicCalendarController');
-const { upload } = require('../config/cloudinary');
 
 // Route to create a new academic calendar
-router.post('/', upload.single('document'), academicCalendarController.createAcademicCalendar);
+router.post('/', academicCalendarController.createAcademicCalendar);
 
 // Route to get all academic calendars
 router.get('/', academicCalendarController.getAcademicCalendars);
@@ -15,7 +14,7 @@ router.get('/', academicCalendarController.getAcademicCalendars);
 router.get('/:id', academicCalendarController.getAcademicCalendarById);
 
 // Route to update an academic calendar by its ID
-router.put('/:id', upload.single('document'), academicCalendarController.updateAcademicCalendar);
+router.put('/:id', academicCalendarController.updateAcademicCalendar);
 
 // Route to delete an academic calendar by its ID
 router.delete('/:id', academicCalendarController.deleteAcademicCalendar);

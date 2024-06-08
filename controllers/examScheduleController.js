@@ -1,19 +1,29 @@
 // project-root/controllers/examScheduleController.js
 
 const ExamSchedule = require('../models/ExamSchedule');
-const { upload } = require('../config/cloudinary');
-
+const { upload, uploadImage } = require('../config/cloudinary');
+require("dotenv").config();
 // Controller functions to handle CRUD operations for exam schedules
 
 // Create a new exam schedule
 exports.createExamSchedule = async (req, res) => {
     try {
-        const result = await upload(req.file.path); // Upload document to Cloudinary
+        const file = req.files.documentUrl;
+
+        if(!file){
+            return res.status(401).json({
+                message:"pdf file not found"
+            })
+        }
+
+        const uploadedFile = await uploadImage(file,process.env.FOLDER_PDF)
+
         const examSchedule = new ExamSchedule({
             title: req.body.title,
-            documentUrl: result.secure_url,
+            documentUrl: uploadedFile.secure_url,
             uploadDate: req.body.uploadDate
         });
+
         await examSchedule.save();
         res.status(201).json(examSchedule);
     } catch (err) {
@@ -47,9 +57,13 @@ exports.getExamScheduleById = async (req, res) => {
 // Update an exam schedule by its ID
 exports.updateExamSchedule = async (req, res) => {
     try {
+
+        const file = req.files.documentUrl
+
         let updateData = { title: req.body.title, uploadDate: req.body.uploadDate };
-        if (req.file) {
-            const result = await upload(req.file.path); // Upload new document to Cloudinary
+        
+        if (file) {
+            const result = await uploadImage(file,process.env.FOLDER_PDF); // Upload new document to Cloudinary
             updateData.documentUrl = result.secure_url;
         }
         const examSchedule = await ExamSchedule.findByIdAndUpdate(req.params.id, updateData, { new: true });

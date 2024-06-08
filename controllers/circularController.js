@@ -1,5 +1,5 @@
 const Circular = require('../models/Circular');
-const { upload } = require('../config/cloudinary');
+const { upload, uploadImage } = require('../config/cloudinary');
 const cloudinary = require('cloudinary').v2;
 
 // Controller functions to handle CRUD operations for circulars
@@ -7,12 +7,18 @@ const cloudinary = require('cloudinary').v2;
 // Create a new circular
 exports.createCircular = async (req, res) => {
     try {
-        const result = await cloudinary.uploader.upload(req.file.path, {
-            folder: 'circulars'
-        }); // Upload document to Cloudinary
+
+        const file = req.files.documentUrl;
+
+        if(!file){
+            res.status(401).json({ message: "pdf file not found" });    
+        }
+
+        const uploadedFile = await uploadImage(file,process.env.FOLDER_PDF);
+
         const circular = new Circular({
             name: req.body.name,
-            documentUrl: result.secure_url,
+            documentUrl: uploadedFile?.secure_url,
             uploadDate: req.body.uploadDate
         });
         await circular.save();
@@ -49,10 +55,10 @@ exports.getCircularById = async (req, res) => {
 exports.updateCircular = async (req, res) => {
     try {
         let updateData = { name: req.body.name, uploadDate: req.body.uploadDate };
-        if (req.file) {
-            const result = await cloudinary.uploader.upload(req.file.path, {
-                folder: 'circulars'
-            }); // Upload new document to Cloudinary
+        const file = req.files.documentUrl;
+
+        if (file) {
+            const result = await uploadImage(file,process.env.FOLDER_PDF); // Upload new document to Cloudinary
             updateData.documentUrl = result.secure_url;
         }
         const circular = await Circular.findByIdAndUpdate(req.params.id, updateData, { new: true });

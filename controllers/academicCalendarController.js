@@ -1,43 +1,38 @@
 const AcademicCalendar = require('../models/AcademicCalendar');
-const { upload } = require('../config/cloudinary');
+const { upload, uploadImage } = require('../config/cloudinary');
 const multer = require('multer');
-
+require("dotenv").config();
 // Configure Multer to handle file uploads
 const uploadMiddleware = multer({ storage: multer.memoryStorage() }).single('file');
 
 // Create a new academic calendar
 exports.createAcademicCalendar = async (req, res) => {
-    uploadMiddleware(req, res, async (err) => {
-        if (err) {
-            return res.status(400).json({ message: 'File upload error: ' + err.message });
-        }
-
         try {
             // Check if the file is present
-            if (!req.file) {
+            if (!req.files.pdfUrl) {
                 return res.status(400).json({ message: 'No file uploaded' });
             }
+
+            const uploadedFile = await uploadImage(req.files.pdfUrl,process.env.FOLDER_PDF);
 
             // Check if the programs field is present
             if (!req.body.programs) {
                 return res.status(400).json({ message: 'Programs field is required' });
             }
 
-            // Upload the file to Cloudinary
-            const result = await upload(req.file.buffer);
 
             // Create the academic calendar entry
             const academicCalendar = new AcademicCalendar({
                 programs: JSON.parse(req.body.programs),
-                pdfUrl: result.secure_url
+                pdfUrl: uploadedFile.secure_url
             });
 
             await academicCalendar.save();
+
             res.status(201).json(academicCalendar);
         } catch (err) {
             res.status(400).json({ message: 'Error creating academic calendar: ' + err.message });
         }
-    });
 };
 
 // Get all academic calendars
@@ -65,14 +60,15 @@ exports.getAcademicCalendarById = async (req, res) => {
 
 // Update an academic calendar by its ID
 exports.updateAcademicCalendar = async (req, res) => {
-    uploadMiddleware(req, res, async (err) => {
-        if (err) {
-            return res.status(400).json({ message: 'File upload error: ' + err.message });
-        }
 
         try {
             let updateData = {};
             
+            if(req.files.pdfUrl){
+                 const uploadedPdf = await uploadImage(req.files.pdfUrl.process.env.FOLDER_PDF);
+                 updateData.pdfUrl = uploadedPdf.secure_url
+            }
+
             // Check if the programs field is present
             if (req.body.programs) {
                 updateData.programs = JSON.parse(req.body.programs);
@@ -81,10 +77,6 @@ exports.updateAcademicCalendar = async (req, res) => {
             }
 
             // Check if a file is uploaded and upload it to Cloudinary
-            if (req.file) {
-                const result = await upload(req.file.buffer);
-                updateData.pdfUrl = result.secure_url;
-            }
 
             const academicCalendar = await AcademicCalendar.findByIdAndUpdate(req.params.id, updateData, { new: true });
             if (!academicCalendar) {
@@ -95,7 +87,6 @@ exports.updateAcademicCalendar = async (req, res) => {
         } catch (err) {
             res.status(400).json({ message: 'Error updating academic calendar: ' + err.message });
         }
-    });
 };
 
 // Delete an academic calendar by its ID

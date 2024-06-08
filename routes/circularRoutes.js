@@ -3,12 +3,11 @@
 const express = require('express');
 const router = express.Router();
 const circularController = require('../controllers/circularController');
-const { upload } = require('../config/cloudinary');
 
 // Define routes for handling circular requests
 
 // Route to create a new circular
-router.post('/', upload.single('document'), circularController.createCircular);
+router.post('/', circularController.createCircular);
 
 // Route to get all circulars
 router.get('/', circularController.getCirculars);
@@ -17,7 +16,7 @@ router.get('/', circularController.getCirculars);
 router.get('/:id', circularController.getCircularById);
 
 // Route to update a circular by its ID
-router.put('/:id', upload.single('document'), circularController.updateCircular);
+router.put('/:id', circularController.updateCircular);
 
 // Route to delete a circular by its ID
 router.delete('/:id', circularController.deleteCircular);
