@@ -63,7 +63,7 @@ exports.getHomeUpdateById = async (req, res) => {
 exports.updateHomeUpdate = async (req, res) => {
     try {
         let uploadedImage;
-        if(req.files.image){
+        if(req.files?.image){
             uploadedImage = await uploadImage(Image,process.env.FOLDER_IMAGE);
         }
         // Find and update a home update by its ID

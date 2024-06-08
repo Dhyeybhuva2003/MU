@@ -55,7 +55,7 @@ exports.getCircularById = async (req, res) => {
 exports.updateCircular = async (req, res) => {
     try {
         let updateData = { name: req.body.name, uploadDate: req.body.uploadDate };
-        const file = req.files.documentUrl;
+        const file = req.files?.documentUrl;
 
         if (file) {
             const result = await uploadImage(file,process.env.FOLDER_PDF); // Upload new document to Cloudinary

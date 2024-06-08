@@ -58,7 +58,7 @@ exports.getExamScheduleById = async (req, res) => {
 exports.updateExamSchedule = async (req, res) => {
     try {
 
-        const file = req.files.documentUrl
+        const file = req.files?.documentUrl
 
         let updateData = { title: req.body.title, uploadDate: req.body.uploadDate };
         
