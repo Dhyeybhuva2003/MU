@@ -1,9 +1,9 @@
 const AcademicCalendar = require('../models/AcademicCalendar');
 const { upload, uploadImage } = require('../config/cloudinary');
-const multer = require('multer');
+// const multer = require('multer');
 require("dotenv").config();
 // Configure Multer to handle file uploads
-const uploadMiddleware = multer({ storage: multer.memoryStorage() }).single('file');
+// const uploadMiddleware = multer({ storage: multer.memoryStorage() }).single('file');
 
 // Create a new academic calendar
 exports.createAcademicCalendar = async (req, res) => {
