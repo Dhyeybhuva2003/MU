@@ -24,6 +24,7 @@ exports.createHomeUpdate = async (req, res) => {
         res.status(201).json(homeUpdate);
     } catch (err) {
         // Handle error if unable to create home update
+        console.log("bhel", err);
         res.status(400).json({ message: err.message });
     }
 };
