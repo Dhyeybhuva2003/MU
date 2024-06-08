@@ -12,7 +12,7 @@ const register = async (req, res) => {
         }
 
         // Hash the password
-        const hashedPassword = await bcrypt.hash(password, 10);
+        // const hashedPassword = await bcrypt.hash(password, 10);
 
         // Create a new user
         const user = new User({ username, email, password: hashedPassword });
@@ -35,7 +35,7 @@ const login = async (req, res) => {
         }
 
         // Compare the password
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = await(password, user.password);
 
         if (!isMatch) {
             return res.status(400).json({ message: 'Invalid password' });
