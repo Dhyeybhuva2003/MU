@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const bodyParser = require('body-parser'); // Import body-parser
 
 const placementRecordRoutes = require('./routes/placementRecordRoutes');
 const homeUpdateRoutes = require('./routes/homeUpdateRoutes');
@@ -13,9 +12,9 @@ const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
-// Increase payload size limit
-app.use(bodyParser.json({ limit: '50mb' })); // Adjust the limit as needed
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+// Express built-in body parser without size limits
+app.use(express.json()); // No size limit specified
+app.use(express.urlencoded({ extended: true })); // No size limit specified
 
 // CORS Middleware allowing requests from all origins
 app.use(cors());
