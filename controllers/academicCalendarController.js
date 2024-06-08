@@ -23,7 +23,7 @@ exports.createAcademicCalendar = async (req, res) => {
 
             // Create the academic calendar entry
             const academicCalendar = new AcademicCalendar({
-                programs: JSON.parse(req.body.programs),
+                programs: req.body.programs,
                 pdfUrl: uploadedFile.secure_url
             });
 
@@ -71,7 +71,7 @@ exports.updateAcademicCalendar = async (req, res) => {
 
             // Check if the programs field is present
             if (req.body.programs) {
-                updateData.programs = JSON.parse(req.body.programs);
+                updateData.programs = req.body.programs;
             } else {
                 return res.status(400).json({ message: 'Programs field is required' });
             }
