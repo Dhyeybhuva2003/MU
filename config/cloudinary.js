@@ -26,7 +26,7 @@ module.exports.uploadImage = async (file,folder,height)=>{
         }
         
         option.resource_type="auto"
-        const result = await cloud.uploader.upload(file.tempFilePath,option);
+        const result = await cd.uploader.upload(file.tempFilePath,option);
         return result;
     } catch (error) {
         console.log(error.message);
