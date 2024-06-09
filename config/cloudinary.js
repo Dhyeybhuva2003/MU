@@ -1,6 +1,8 @@
 // const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
 // Configure Cloudinary with credentials from environment variables
+
+
 const cd = require("cloudinary").v2;
 require("dotenv").config();
  module.exports.connectCloudinary = () => {

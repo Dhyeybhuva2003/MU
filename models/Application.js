@@ -1,0 +1,42 @@
+const mongoose = require('mongoose');
+
+const applicationSchema = new mongoose.Schema({
+    fullName: { type: String, required: true },
+    dateOfBirth: { type: Date, required: true },
+    gender: String,
+    category: String,
+    address: String,
+    city: String,
+    state: String,
+    postalCode: String,
+    country: String,
+    phone: { type: String, required: true },
+    email: { type: String, required: true },
+    positionApplyFor: { type: String, required: true },
+    faculty: String,
+    tenthPercentage: Number,
+    twelfthPercentage: Number,
+    ugDegree: { type: String, required: true },
+    ugUniversityName: { type: String, required: true },
+    ugCGPA: { type: Number, required: true },
+    ugYearOfPassing: { type: Number, required: true },
+    pgDegree: { type: String, required: true },
+    pgUniversityName: { type: String, required: true },
+    pgCGPA: { type: Number, required: true },
+    pgYearOfPassing: { type: Number, required: true },
+    phdDegree: String,
+    phdUniversityName: String,
+    phdCGPA: Number,
+    phdYearOfPassing: Number,
+    resumeUrl: { type: String, required: true },
+    academicExperience: Number,
+    industryExperience: Number,
+    researchExperience: Number,
+    totalExperience: Number,
+    canJoinImmediately: Boolean,
+    noticePeriod: String,
+    alternateMobileNo: String,
+    alternateEmail: String
+});
+
+module.exports = mongoose.model('Application', applicationSchema);
