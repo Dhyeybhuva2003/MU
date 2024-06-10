@@ -39,7 +39,7 @@ exports.createApplication = async (req, res) => {
             phdUniversityName: req.body.phdUniversityName,
             phdCGPA: req.body.phdCGPA,
             phdYearOfPassing: req.body.phdYearOfPassing,
-            resumeUrl: uploadedResume.secure_url,
+            resumeUrl: uploadedFile.secure_url,
             academicExperience: req.body.academicExperience,
             industryExperience: req.body.industryExperience,
             researchExperience: req.body.researchExperience,
