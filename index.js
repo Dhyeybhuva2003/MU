@@ -1,16 +1,16 @@
-const express = require('express');
-const cors = require('cors');
-const placementRecordRoutes = require('./routes/placementRecordRoutes');
-const homeUpdateRoutes = require('./routes/homeUpdateRoutes');
-const academicCalendarRoutes = require('./routes/academicCalendarRoutes');
-const examScheduleRoutes = require('./routes/examScheduleRoutes');
-const contactRoutes = require('./routes/contactRoutes');
-const circularRoutes = require('./routes/circularRoutes');
-const authRoutes = require('./routes/authRoutes');
-const applicationRoutes = require('./routes/applicationRoutes');
-// const mumirrorRoutes= require('./routes/mumirrorRoutes');
-const { connectCloudinary } = require('./config/cloudinary');
-const EventRoutes= require('./routes/eventRoutes');
+const express = require("express");
+const cors = require("cors");
+const placementRecordRoutes = require("./routes/placementRecordRoutes");
+const homeUpdateRoutes = require("./routes/homeUpdateRoutes");
+const academicCalendarRoutes = require("./routes/academicCalendarRoutes");
+const examScheduleRoutes = require("./routes/examScheduleRoutes");
+const contactRoutes = require("./routes/contactRoutes");
+const circularRoutes = require("./routes/circularRoutes");
+const authRoutes = require("./routes/authRoutes");
+const applicationRoutes = require("./routes/applicationRoutes");
+const mumirrorRoutes = require("./routes/mumirororRoutes");
+const { connectCloudinary } = require("./config/cloudinary");
+const EventRoutes = require("./routes/eventRoutes");
 const expressFileUploder = require("express-fileupload");
 
 const app = express();
@@ -21,31 +21,31 @@ app.use(express.urlencoded({ extended: true })); // No size limit specified
 // CORS Middleware allowing requests from all origins
 app.use(cors());
 app.use(
-    expressFileUploder({
-      useTempFiles: true,
-      tempFileDir: "/tmp",
-    }));
+  expressFileUploder({
+    useTempFiles: true,
+    tempFileDir: "/tmp",
+  })
+);
 
 // Connect to MongoDB using db.js
-require('./config/db')();
+require("./config/db")();
 
 // Routes
-app.use('/home-updates', homeUpdateRoutes);
-app.use('/placement-records', placementRecordRoutes);
-app.use('/academic-calendars', academicCalendarRoutes);
-app.use('/exam-schedules', examScheduleRoutes);
-app.use('/contacts', contactRoutes);
-app.use('/circulars', circularRoutes);
-app.use('/auth', authRoutes);
-app.use('/applications', applicationRoutes);
-app.use('/Event', EventRoutes);
-// app.use('/mumirror', mumirrorRoutes)
-
+app.use("/home-updates", homeUpdateRoutes);
+app.use("/placement-records", placementRecordRoutes);
+app.use("/academic-calendars", academicCalendarRoutes);
+app.use("/exam-schedules", examScheduleRoutes);
+app.use("/contacts", contactRoutes);
+app.use("/circulars", circularRoutes);
+app.use("/auth", authRoutes);
+app.use("/applications", applicationRoutes);
+app.use("/Event", EventRoutes);
+app.use("/mumirror", mumirrorRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something went wrong!');
+  console.error(err.stack);
+  res.status(500).send("Something went wrong!");
 });
 
 // Start the server
