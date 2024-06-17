@@ -10,7 +10,7 @@ const authRoutes = require('./routes/authRoutes');
 const applicationRoutes = require('./routes/applicationRoutes');
 // const mumirrorRoutes= require('./routes/mumirrorRoutes');
 const { connectCloudinary } = require('./config/cloudinary');
-const EventRoutes= require('./routes/eventRoutes')
+const EventRoutes= require('./routes/eventRoutes');
 const expressFileUploder = require("express-fileupload");
 
 const app = express();
