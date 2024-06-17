@@ -8,7 +8,9 @@ const contactRoutes = require('./routes/contactRoutes');
 const circularRoutes = require('./routes/circularRoutes');
 const authRoutes = require('./routes/authRoutes');
 const applicationRoutes = require('./routes/applicationRoutes');
+// const mumirrorRoutes= require('./routes/mumirrorRoutes');
 const { connectCloudinary } = require('./config/cloudinary');
+const EventRoutes= require('./routes/eventRoutes')
 const expressFileUploder = require("express-fileupload");
 
 const app = express();
@@ -36,6 +38,9 @@ app.use('/contacts', contactRoutes);
 app.use('/circulars', circularRoutes);
 app.use('/auth', authRoutes);
 app.use('/applications', applicationRoutes);
+app.use('/Event', EventRoutes);
+// app.use('/mumirror', mumirrorRoutes)
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {
