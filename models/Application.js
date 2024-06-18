@@ -33,7 +33,7 @@ const applicationSchema = new mongoose.Schema({
     industryExperience: Number,
     researchExperience: Number,
     totalExperience: Number,
-    canJoinImmediately: Boolean,
+    canJoinImmediately: String,
     noticePeriod: String,
     alternateMobileNo: String,
     alternateEmail: String
