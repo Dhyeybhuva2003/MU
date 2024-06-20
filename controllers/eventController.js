@@ -7,15 +7,15 @@ require("dotenv").config();
 // Create a new event
 exports.createEvent = async (req, res) => {
     try {
-        if (!req.files || !req.files.eventImage) {
-            return res.status(400).json({ message: "Event image is required" });
+        if (!req.files || !req.files.eventImages || !Array.isArray(req.files.eventImages)) {
+            return res.status(400).json({ message: "Event images are required" });
         }
 
-        const image = req.files.eventImage;
-        const uploadedImage = await uploadImage(image, process.env.EVENT_IMAGE_FOLDER);
+        const images = req.files.eventImages;
+        const uploadedImages = await Promise.all(images.map(image => uploadImage(image, process.env.EVENT_IMAGE_FOLDER)));
 
         const newEvent = new Event({
-            eventImage: uploadedImage.secure_url,
+            eventImages: uploadedImages.map(img => img.secure_url),
             title: req.body.title,
             description: req.body.description
         });
@@ -28,6 +28,7 @@ exports.createEvent = async (req, res) => {
         res.status(500).json({ message: "Failed to create event", error: err.message });
     }
 };
+
 
 // Get all events
 exports.getAllEvents = async (req, res) => {
@@ -57,7 +58,15 @@ exports.getEventById = async (req, res) => {
 // Update an event by ID
 exports.updateEvent = async (req, res) => {
     try {
-        const updatedEvent = await Event.findByIdAndUpdate(req.params.id, req.body, {
+        let updatedData = req.body;
+
+        if (req.files && req.files.eventImages && Array.isArray(req.files.eventImages)) {
+            const images = req.files.eventImages;
+            const uploadedImages = await Promise.all(images.map(image => uploadImage(image, process.env.EVENT_IMAGE_FOLDER)));
+            updatedData.eventImages = uploadedImages.map(img => img.secure_url);
+        }
+
+        const updatedEvent = await Event.findByIdAndUpdate(req.params.id, updatedData, {
             new: true,
             runValidators: true
         });
@@ -72,6 +81,7 @@ exports.updateEvent = async (req, res) => {
         res.status(500).json({ message: "Failed to update event", error: err.message });
     }
 };
+
 
 // Delete an event by ID
 exports.deleteEvent = async (req, res) => {
