@@ -1,10 +1,8 @@
-// models/Event.js
-
 const mongoose = require('mongoose');
 
 const eventSchema = new mongoose.Schema({
-    eventImage: {
-        type: [String], // Store URL of the image in Cloudinary
+    eventImages: {
+        type: [String], // Store URLs of the images in Cloudinary
         required: true
     },
     title: {

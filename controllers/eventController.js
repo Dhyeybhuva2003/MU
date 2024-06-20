@@ -1,5 +1,3 @@
-// controllers/eventsController.js
-
 const { uploadImage } = require('../config/cloudinary');
 const Event = require('../models/Event');
 require("dotenv").config();
@@ -28,7 +26,6 @@ exports.createEvent = async (req, res) => {
         res.status(500).json({ message: "Failed to create event", error: err.message });
     }
 };
-
 
 // Get all events
 exports.getAllEvents = async (req, res) => {
@@ -82,7 +79,6 @@ exports.updateEvent = async (req, res) => {
     }
 };
 
-
 // Delete an event by ID
 exports.deleteEvent = async (req, res) => {
     try {
@@ -98,4 +94,3 @@ exports.deleteEvent = async (req, res) => {
         res.status(500).json({ message: "Failed to delete event", error: err.message });
     }
 };
-
