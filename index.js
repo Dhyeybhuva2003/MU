@@ -11,6 +11,7 @@ const applicationRoutes = require("./routes/applicationRoutes");
 const mumirrorRoutes = require("./routes/mumirororRoutes");
 const { connectCloudinary } = require("./config/cloudinary");
 const EventRoutes = require("./routes/eventRoutes");
+const enquiry=require("./routes/enquiryRoutes")
 const expressFileUploder = require("express-fileupload");
 
 const app = express();
@@ -41,6 +42,7 @@ app.use("/auth", authRoutes);
 app.use("/applications", applicationRoutes);
 app.use("/Event", EventRoutes);
 app.use("/mumirror", mumirrorRoutes);
+app.use("/enquiry",enquiry)
 
 // Error handling middleware
 app.use((err, req, res, next) => {
