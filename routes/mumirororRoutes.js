@@ -1,20 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const mumirororController = require('../controllers/mumirororController');
+const mumirrorController = require('../controllers/mumirororController');
 
-// Route to create a new mumiroror
-router.post('/', mumirororController.createMumiroror);
+// Define routes for handling mumirror requests
 
-// Route to get all mumirorors
-router.get('/', mumirororController.getMumirorors);
+// Route to create a new mumirror entry
+router.post('/', mumirrorController.createMumirror);
 
-// Route to get a single mumiroror by its ID
-router.get('/:id', mumirororController.getMumirororById);
+// Route to get all mumirror entries
+router.get('/', mumirrorController.getMumirrors);
 
-// Route to update a mumiroror by its ID
-router.put('/:id', mumirororController.updateMumiroror);
+// Route to get a single mumirror entry by its ID
+router.get('/:id', mumirrorController.getMumirrorById);
 
-// Route to delete a mumiroror by its ID
-router.delete('/:id', mumirororController.deleteMumiroror);
+// Route to update a mumirror entry by its ID
+router.put('/:id', mumirrorController.updateMumirror);
+
+// Route to delete a mumirror entry by its ID
+router.delete('/:id', mumirrorController.deleteMumirror);
 
 module.exports = router;

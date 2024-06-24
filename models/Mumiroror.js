@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
-const mumirororSchema = new mongoose.Schema({
-    pdf: String, // URL of the PDF stored in Cloudinary
-    tital: String // Title of the entry
+const mumirrorSchema = new mongoose.Schema({
+    images: [String], // Array to store image URLs from Cloudinary
+    year: String, // Format should be '2016-2017'
 });
 
-module.exports = mongoose.model('Mumiroror', mumirororSchema);
+module.exports = mongoose.model('Mumirror', mumirrorSchema);

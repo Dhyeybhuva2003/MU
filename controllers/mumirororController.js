@@ -1,96 +1,128 @@
-const Mumiroror = require('../models/Mumiroror');
 const { uploadImage } = require('../config/cloudinary');
-require("dotenv").config();
+const Mumirror = require('../models/Mumiroror');
+require('dotenv').config();
 
-// Create a new mumiroror entry
-exports.createMumiroror = async (req, res) => {
+// Controller functions to handle CRUD operations for mumirror
+
+// Create a new mumirror entry
+exports.createMumirror = async (req, res) => {
     try {
-        // Check if the file is present
-        if (!req.files || !req.files.pdf) {
-            return res.status(400).json({ message: 'No file uploaded' });
-        }
-
-        const uploadedFile = await uploadImage(req.files.pdf, process.env.FOLDER_PDF);
-
-        // Check if the tital field is present
-        if (!req.body.tital) {
-            return res.status(400).json({ message: 'Tital field is required' });
-        }
-
-        // Create the mumiroror entry
-        const mumiroror = new Mumiroror({
-            pdf: uploadedFile.secure_url,
-            tital: req.body.tital
-        });
-
-        await mumiroror.save();
-
-        res.status(201).json(mumiroror);
-    } catch (err) {
-        res.status(400).json({ message: 'Error creating mumiroror: ' + err.message });
-    }
-};
-
-// Get all mumirorors
-exports.getMumirorors = async (req, res) => {
-    try {
-        const mumirorors = await Mumiroror.find();
-        res.status(200).json(mumirorors);
-    } catch (err) {
-        res.status(500).json({ message: 'Error fetching mumirorors: ' + err.message });
-    }
-};
-
-// Get a single mumiroror by its ID
-exports.getMumirororById = async (req, res) => {
-    try {
-        const mumiroror = await Mumiroror.findById(req.params.id);
-        if (!mumiroror) {
-            return res.status(404).json({ message: 'Mumiroror not found' });
-        }
-        res.status(200).json(mumiroror);
-    } catch (err) {
-        res.status(500).json({ message: 'Error fetching mumiroror: ' + err.message });
-    }
-};
-
-// Update a mumiroror by its ID
-exports.updateMumiroror = async (req, res) => {
-    try {
-        let updateData = {};
-
-        if (req.files && req.files.pdf) {
-            const uploadedPdf = await uploadImage(req.files.pdf, process.env.FOLDER_PDF);
-            updateData.pdf = uploadedPdf.secure_url;
-        }
-
-        // Check if the tital field is present
-        if (req.body.tital) {
-            updateData.tital = req.body.tital;
+        const images = req.files?.images;
+        let uploadedImages = [];
+        
+        if (images && images.length > 0) {
+            if (images.length > 10) {
+                return res.status(400).json({
+                    message: "You can upload a maximum of 10 images"
+                });
+            }
+            for (const image of images) {
+                if (image.mimetype !== 'image/jpeg') {
+                    return res.status(400).json({
+                        message: "Only JPG format is allowed"
+                    });
+                }
+                const uploadedImage = await uploadImage(image, process.env.FOLDER_IMAGE);
+                uploadedImages.push(uploadedImage.secure_url);
+            }
         } else {
-            return res.status(400).json({ message: 'Tital field is required' });
+            return res.status(401).json({
+                message: "Images not found"
+            });
         }
-
-        const mumiroror = await Mumiroror.findByIdAndUpdate(req.params.id, updateData, { new: true });
-        if (!mumiroror) {
-            return res.status(404).json({ message: 'Mumiroror not found' });
-        }
-
-        res.status(200).json(mumiroror);
+        
+        req.body.images = uploadedImages;
+        // Create a new mumirror entry using the request body
+        const mumirror = await Mumirror.create(req.body);
+        // Respond with the created mumirror entry
+        res.status(201).json(mumirror);
     } catch (err) {
-        res.status(400).json({ message: 'Error updating mumiroror: ' + err.message });
+        // Handle error if unable to create mumirror entry
+        res.status(400).json({ message: err.message });
     }
 };
 
-// Delete a mumiroror by its ID
-exports.deleteMumiroror = async (req, res) => {
+// Get all mumirror entries
+exports.getMumirrors = async (req, res) => {
     try {
-        const mumiroror = await Mumiroror.findByIdAndDelete(req.params.id);
-        if (!mumiroror) {
-            return res.status(404).json({ message: 'Mumiroror not found' });
-        }
-        res.status(200).json({ message: 'Mumiroror deleted successfully' });
+        // Find all mumirror entries in the database
+        const mumirrors = await Mumirror.find();
+        // Respond with the list of mumirror entries
+        res.status(200).json(mumirrors);
     } catch (err) {
-        res.status(500).json({ message: 'Error deleting mumiroror: ' + err.message });
+        // Handle error if unable to fetch mumirror entries
+        res.status(500).json({ message: err.message });
+    }
+};
+
+// Get a single mumirror entry by its ID
+exports.getMumirrorById = async (req, res) => {
+    try {
+        // Find a mumirror entry by its ID
+        const mumirror = await Mumirror.findById(req.params.id);
+        // If mumirror entry not found, respond with 404 Not Found
+        if (!mumirror) {
+            return res.status(404).json({ message: 'Mumirror entry not found' });
+        }
+        // Respond with the found mumirror entry
+        res.status(200).json(mumirror);
+    } catch (err) {
+        // Handle error if unable to fetch mumirror entry
+        res.status(500).json({ message: err.message });
+    }
+};
+
+// Update a mumirror entry by its ID
+exports.updateMumirror = async (req, res) => {
+    try {
+        let uploadedImages = [];
+        
+        if (req.files?.images) {
+            const images = req.files.images;
+            if (images.length > 10) {
+                return res.status(400).json({
+                    message: "You can upload a maximum of 10 images"
+                });
+            }
+            for (const image of images) {
+                if (image.mimetype !== 'image/jpeg') {
+                    return res.status(400).json({
+                        message: "Only JPG format is allowed"
+                    });
+                }
+                const uploadedImage = await uploadImage(image, process.env.FOLDER_IMAGE);
+                uploadedImages.push(uploadedImage.secure_url);
+            }
+            req.body.images = uploadedImages;
+        }
+        
+        // Find and update a mumirror entry by its ID
+        const mumirror = await Mumirror.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        // If mumirror entry not found, respond with 404 Not Found
+        if (!mumirror) {
+            return res.status(404).json({ message: 'Mumirror entry not found' });
+        }
+        // Respond with the updated mumirror entry
+        res.status(200).json(mumirror);
+    } catch (err) {
+        // Handle error if unable to update mumirror entry
+        res.status(400).json({ message: err.message });
+    }
+};
+
+// Delete a mumirror entry by its ID
+exports.deleteMumirror = async (req, res) => {
+    try {
+        // Find and delete a mumirror entry by its ID
+        const mumirror = await Mumirror.findByIdAndDelete(req.params.id);
+        // If mumirror entry not found, respond with 404 Not Found
+        if (!mumirror) {
+            return res.status(404).json({ message: 'Mumirror entry not found' });
+        }
+        // Respond with success message
+        res.status(200).json({ message: 'Mumirror entry deleted successfully' });
+    } catch (err) {
+        // Handle error if unable to delete mumirror entry
+        res.status(500).json({ message: err.message });
     }
 };
