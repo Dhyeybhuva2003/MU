@@ -9,6 +9,7 @@ const circularRoutes = require("./routes/circularRoutes");
 const authRoutes = require("./routes/authRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
 const mumirrorRoutes = require("./routes/mumirororRoutes");
+const studentRoutes =require('./routes/studentRoutes')
 const { connectCloudinary } = require("./config/cloudinary");
 const EventRoutes = require("./routes/eventRoutes");
 const enquiry=require("./routes/enquiryRoutes")
@@ -43,6 +44,7 @@ app.use("/applications", applicationRoutes);
 app.use("/Event", EventRoutes);
 app.use("/mumirror", mumirrorRoutes);
 app.use("/enquiry",enquiry)
+app.use("/Student",studentRoutes)
 
 // Error handling middleware
 app.use((err, req, res, next) => {
