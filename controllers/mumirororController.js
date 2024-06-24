@@ -11,11 +11,6 @@ exports.createMumirror = async (req, res) => {
         let uploadedImages = [];
         
         if (images && images.length > 0) {
-            if (images.length > 10) {
-                return res.status(400).json({
-                    message: "You can upload a maximum of 10 images"
-                });
-            }
             for (const image of images) {
                 if (image.mimetype !== 'image/jpeg') {
                     return res.status(400).json({
@@ -79,11 +74,6 @@ exports.updateMumirror = async (req, res) => {
         
         if (req.files?.images) {
             const images = req.files.images;
-            if (images.length > 10) {
-                return res.status(400).json({
-                    message: "You can upload a maximum of 10 images"
-                });
-            }
             for (const image of images) {
                 if (image.mimetype !== 'image/jpeg') {
                     return res.status(400).json({
